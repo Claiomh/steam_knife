@@ -17,8 +17,14 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{ route('profile.edit') }}">My profile. edit</a></li>
-                            <li><a class="dropdown-item" ref="{{ route('logout') }}">Logout</a></li>
-                        </ul>
+                            <li>
+                                <form method="POST" action="{{route('logout')}}">
+                                    @csrf
+                                    <x-dropdown-link :href="route('logout')"
+                                    onclick="event.preventDefault(); this.closest('form').submit();">
+                                        {{ __('Log Out')  }}
+                                    </x-dropdown-link>
+                                </form></ul>
                     </li>
                 @else
                     <li class="nav-item dropdown">
