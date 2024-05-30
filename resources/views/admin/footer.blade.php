@@ -7,3 +7,5 @@
 <script src="{{asset('admin_assets/vendor/jquery-validation/jquery.validate.min.js')}}"></script>
 <script src="{{asset('admin_assets/js/charts-home.js')}}"></script>
 <script src="{{asset('admin_assets/js/front.js')}}"></script>
+</body>
+</html>

@@ -1,9 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-@include('admin.css')
-</head>
-<body>
 @include('admin.header')
 <div class="d-flex align-items-stretch">
     <!-- Sidebar Navigation-->
@@ -15,6 +9,5 @@
 @include('admin.body')
     </div>
 </div>
-@include('admin.scripts')
-</body>
-</html>
+@include('admin.footer')
+

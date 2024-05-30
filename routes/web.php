@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\Admin\BaseController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Public\PublicController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
 
-Route::get('/', [HomeController::class, 'home']);
+Route::get('/', [PublicController::class, 'index'])->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -21,4 +23,15 @@ require __DIR__.'/auth.php';
 
 
 
-Route::get('/admin/dashboard', [HomeController::class, 'index'])->middleware(['auth', 'admin']);
+Route::get('/admin/dashboard', [BaseController::class, 'index'])->middleware(['auth', 'admin']);
+
+Route::get('/admin/categories', [AdminCategoryController::class, 'index'])->middleware(['auth', 'admin'])->name('admin.category.index');
+
+Route::get('/admin/categories/create', [AdminCategoryController::class, 'create'])->middleware(['auth', 'admin'])->name('admin.category.create');
+Route::post('/admin/categories', [AdminCategoryController::class, 'store'])->middleware(['auth', 'admin'])->name('admin.category.store');
+
+Route::get('/admin/categories/edit/{{category}}', [AdminCategoryController::class, 'create'])->middleware(['auth', 'admin']);
+
+
+
+
