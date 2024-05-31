@@ -18,7 +18,9 @@ return new class extends Migration
             $table->text('content')->nullable();
             $table->string('slug');
             $table->string('image');
-            $table->boolean('is_published')->default(false);
+            $table->integer('price');
+            $table->integer('count');
+            $table->boolean('is_active')->default(false);
             $table->timestamps();
         });
     }

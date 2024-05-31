@@ -13,6 +13,9 @@
         <li>
             <a href="{{url('admin/categories')}}"> <i class="icon-grid"></i>Categories </a>
         </li>
+        <li>
+            <a href="{{url('admin/products')}}"> <i class="icon-picture"></i>Products </a>
+        </li>
         <li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i>Example dropdown </a>
             <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
                 <li><a href="#">Page</a></li>

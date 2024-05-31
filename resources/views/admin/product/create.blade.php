@@ -6,7 +6,7 @@
     <div class="page-content">
         <div class="page-header">
             <div class="container-fluid">
-                <form method="post" action="{{route('admin.category.store')}}">
+                <form method="post" action="{{route('admin.product.store')}}">
                     @csrf
                     <div class="mb-3">
                         <label for="title" class="form-label">Title</label>
@@ -17,7 +17,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="description" class="form-label">Description</label>
-                        <input type="text"class="form-control" name="description" id="exampleInputPassword1">
+                        <input type="text"class="form-control" name="description" id="description">
                         @error('description')
                         {{ $message }}
                         @enderror
@@ -26,16 +26,25 @@
                         <label for="image" class="form-label">Image</label>
                         <input type="text" class="form-control" name="image" id="image">
                         @error('image')
-                        {{ $message }}
                         @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="is_active" class="form-label">Active category</label>
-                        <input type="checkbox" class="form-control" name="is_active" value="1">
-                        @error('is_active')
-                        {{ $message }}
+                        <label for="price" class="form-label">Price</label>
+                        <input type="number" class="form-control" name="price" id="price">
+                        @error('price')
                         @enderror
                     </div>
+                    <div class="mb-3">
+                        <label for="count" class="form-label">Count</label>
+                        <input type="number" class="form-control" name="count" id="count">
+                        @error('count')
+                        @enderror
+                    </div>
+                    <select class="form-select" aria-label="Default select example" name="category_id">
+                        @foreach($categories as $category)
+                            <option value="{{$category->id}}">{{$category->title}}</option>
+                        @endforeach
+                    </select>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
