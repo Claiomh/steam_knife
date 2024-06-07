@@ -37,9 +37,9 @@
                         @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="count" class="form-label">Count</label>
-                        <input type="number" class="form-control" name="count" value="{{$product->count}}" id="count">
-                        @error('count')
+                        <label for="quantity" class="form-label">quantity</label>
+                        <input type="number" class="form-control" name="quantity" value="{{$product->quantity}}" id="quantity">
+                        @error('quantity')
                         @enderror
                     </div>
                     <select class="form-select" aria-label="Default select example" name="category_id">

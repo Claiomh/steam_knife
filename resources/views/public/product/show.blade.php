@@ -10,8 +10,8 @@
                 @csrf
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                 <div class="form-group">
-                    <label for="count">Quantity:</label>
-                    <input type="number" name="count" id="quantity" value="1" class="form-control">
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" name="quantity" id="quantity" value="1" class="form-control">
                 </div>
                 <button type="submit" class="btn btn-primary">Add to Cart</button>
             </form>

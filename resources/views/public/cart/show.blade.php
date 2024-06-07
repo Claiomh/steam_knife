@@ -1,34 +1,34 @@
-<div class="container">
-    <h1>Shopping Cart</h1>
-    @if(Auth::check())
-        @foreach($cart as $item)
-            <div class="row">
-                <div class="col-md-8">
-                    <h4>{{ $item->product->title }}</h4>
-                    <p>Price: ${{ $item->product->price }}</p>
-                    <p>Quantity: {{ $item->count }}</p>
-                    <form action="{{ route('cart.remove') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="product_id" value="{{ $item->product->id }}">
-                        <button type="submit" class="btn btn-danger">Remove</button>
-                    </form>
-                </div>
-            </div>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cart</title>
+</head>
+<body>
+<h1>Your Cart</h1>
+@if (count($cartItems) > 0)
+    <table>
+        <thead>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach ($cartItems as $item)
+            <tr>
+                <td>{{ $item->product->title }}</td>
+                <td>{{ $item->quantity }}</td>
+                <td>{{ $item->product->price }}</td>
+                <td>{{ $item->quantity * $item->product->price }}</td>
+            </tr>
         @endforeach
-    @else
-        @foreach($cart as $id => $details)
-            <div class="row">
-                <div class="col-md-8">
-                    <h4>{{ $details['name'] }}</h4>
-                    <p>Price: ${{ $details['price'] }}</p>
-                    <p>Quantity: {{ $details['count'] }}</p>
-                    <form action="{{ route('cart.remove') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="product_id" value="{{ $id }}">
-                        <button type="submit" class="btn btn-danger">Remove</button>
-                    </form>
-                </div>
-            </div>
-        @endforeach
-    @endif
-</div>
+        </tbody>
+    </table>
+    <h2>Total: ${{ $cart_total }}</h2>
+@else
+    <p>Your cart is empty.</p>
+@endif
+</body>
+</html>

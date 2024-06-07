@@ -10,7 +10,9 @@ use App\Http\Controllers\Public\ProductController as PublicProductController;
 use App\Http\Controllers\Public\CartController;
 use App\Http\Controllers\ApiController;
 
+use App\Http\Controllers\MailController;
 
+Route::get('/send-test-mail', [MailController::class, 'sendTestMail']);
 
 
 

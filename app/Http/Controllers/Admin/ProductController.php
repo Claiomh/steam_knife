@@ -35,7 +35,7 @@ class ProductController extends Controller
                 'attribute_id' => 'integer|required',
                 'price' => 'integer|required',
                 'description' => 'string|required',
-                'count' => 'integer|required',
+                'quantity' => 'integer|required',
                 'slug' => 'string|unique:categories',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]
@@ -52,7 +52,7 @@ class ProductController extends Controller
             'category_id' => $request->category_id,
             'attribute_id' => $request->attribute_id,
             'price' => $request->price,
-            'count' => $request->count,
+            'quantity' => $request->quantity,
             'slug' => Str::slug($request->title),
             'image' => $path,
 
@@ -79,7 +79,7 @@ class ProductController extends Controller
             'attribute_id' => 'integer|required',
             'price' => 'integer|required',
             'description' => 'string|required',
-            'count' => 'integer|required',
+            'quantity' => 'integer|required',
             'slug' => 'string|unique:categories',
             'image' => 'string|nullable',
         ]);
@@ -89,7 +89,7 @@ class ProductController extends Controller
             'category_id' => $request->category_id,
             'attribute_id' => $request->attribute_id,
             'price' => $request->price,
-            'count' => $request->count,
+            'quantity' => $request->quantity,
             'slug' => Str::slug($request->title),
             'image' => $request->image,
         ]);
