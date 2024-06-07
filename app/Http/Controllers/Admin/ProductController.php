@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Attribute;
 use Illuminate\Support\Str;
 use App\Models\Category;
 use App\Models\Product;
@@ -12,15 +13,17 @@ class ProductController extends Controller
 {
     public function index()
     {
+        $attributes = Attribute::all();
         $products = Product::all();
-        return view('admin.product.index', compact('products'));
+        return view('admin.product.index', compact('products', 'attributes'));
     }
 
 
     public function create()
     {
+        $attributes = Attribute::all();
         $categories = Category::where('is_active', 1)->get();
-        return view('admin.product.create', compact('categories'));
+        return view('admin.product.create', compact('categories', 'attributes'));
     }
 
 
@@ -29,21 +32,29 @@ class ProductController extends Controller
         $request->validate([
                 'title' => 'string|required',
                 'category_id' => 'integer|required',
+                'attribute_id' => 'integer|required',
                 'price' => 'integer|required',
                 'description' => 'string|required',
                 'count' => 'integer|required',
                 'slug' => 'string|unique:categories',
-                'image' => 'string|nullable',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]
         );
+        $path = '';
+        if ($request->hasFile('image')) {
+            $fileName = time() . '.' . $request->image->extension();
+            $request->image->storeAs('public/images/products', $fileName);
+            $path = 'images/products/' . $fileName;
+        }
         Product::create([
             'title' => $request->title,
             'description' => $request->description,
             'category_id' => $request->category_id,
+            'attribute_id' => $request->attribute_id,
             'price' => $request->price,
             'count' => $request->count,
             'slug' => Str::slug($request->title),
-            'image' => $request->image,
+            'image' => $path,
 
         ]);
         return redirect()->route('admin.product.index');
@@ -54,8 +65,9 @@ class ProductController extends Controller
 //    public function show(Category $category) {}
     public function edit(Product $product)
     {
+        $attributes = Attribute::all();
         $categories = Category::where('is_active', 1)->get();
-        return view('admin.product.edit', compact('product', 'categories'));
+        return view('admin.product.edit', compact('product', 'categories', 'attributes'));
     }
 
 
@@ -64,6 +76,7 @@ class ProductController extends Controller
         $request->validate([
             'title' => 'string|required',
             'category_id' => 'integer|required',
+            'attribute_id' => 'integer|required',
             'price' => 'integer|required',
             'description' => 'string|required',
             'count' => 'integer|required',
@@ -74,6 +87,7 @@ class ProductController extends Controller
             'title' => $request->title,
             'description' => $request->description,
             'category_id' => $request->category_id,
+            'attribute_id' => $request->attribute_id,
             'price' => $request->price,
             'count' => $request->count,
             'slug' => Str::slug($request->title),

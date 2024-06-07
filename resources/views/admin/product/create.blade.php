@@ -6,7 +6,7 @@
     <div class="page-content">
         <div class="page-header">
             <div class="container-fluid">
-                <form method="post" action="{{route('admin.product.store')}}">
+                <form method="post" action="{{route('admin.product.store')}}" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <label for="title" class="form-label">Title</label>
@@ -24,7 +24,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="image" class="form-label">Image</label>
-                        <input type="text" class="form-control" name="image" id="image">
+                        <input type="file" class="form-control" name="image" id="image">
                         @error('image')
                         @enderror
                     </div>
@@ -43,6 +43,11 @@
                     <select class="form-select" aria-label="Default select example" name="category_id">
                         @foreach($categories as $category)
                             <option value="{{$category->id}}">{{$category->title}}</option>
+                        @endforeach
+                    </select>
+                    <select class="form-select" aria-label="Default select example" name="attribute_id">
+                        @foreach($attributes as $attribute)
+                            <option value="{{$attribute->id}}">{{$attribute->title}}</option>
                         @endforeach
                     </select>
                     <button type="submit" class="btn btn-primary">Submit</button>

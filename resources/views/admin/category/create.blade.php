@@ -6,7 +6,7 @@
     <div class="page-content">
         <div class="page-header">
             <div class="container-fluid">
-                <form method="post" action="{{route('admin.category.store')}}">
+                <form method="post" action="{{route('admin.category.store')}}" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <label for="title" class="form-label">Title</label>
@@ -24,7 +24,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="image" class="form-label">Image</label>
-                        <input type="text" class="form-control" name="image" id="image">
+                        <input type="file" class="form-control" name="image" id="image">
                         @error('image')
                         {{ $message }}
                         @enderror

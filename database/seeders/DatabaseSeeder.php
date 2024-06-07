@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Attribute;
 use App\Models\User;
+
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -22,5 +24,9 @@ class DatabaseSeeder extends Seeder
             'usertype' => 'admin',
             'password' => Hash::make('password'),
         ]);
+        $this->call([
+            AttributeSeeder::class,
+        ]);
+        Attribute::create(['title' => 'Another']);
     }
 }

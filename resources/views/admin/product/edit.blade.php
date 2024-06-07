@@ -47,6 +47,11 @@
                             <option {{$product->category_id === $category->id ? 'selected' : ''}} value="{{$category->id}}">{{$category->title}}</option>
                         @endforeach
                     </select>
+                    <select class="form-select" aria-label="Default select example" name="category_id">
+                        @foreach($attributes as $attribute)
+                            <option {{$product->attribute_id === $attribute->id ? 'selected' : ''}} value="{{$attribute->id}}">{{$attribute->title}}</option>
+                        @endforeach
+                    </select>
                     <button type="submit" class="btn btn-primary">Update</button>
                 </form>
             </div>

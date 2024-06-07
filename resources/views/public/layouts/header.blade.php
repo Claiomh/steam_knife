@@ -13,5 +13,5 @@
 </head>
 <body>
 <header>
-    @include('layouts.navigation')
+    @include('public.layouts.navigation')
 </header>

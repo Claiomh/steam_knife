@@ -11,6 +11,14 @@
 {{--                    <a class="nav-link active" aria-current="page" href="#">Home</a>--}}
                     <a class="nav-link active" aria-current="page" href="/admin/dashboard">Adminka</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/shop">Shop</a>
+
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/cart">Cart</a>
+
+                </li>
                 @auth
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
