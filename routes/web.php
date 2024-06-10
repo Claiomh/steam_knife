@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\BaseController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Public\PublicController;
 use Illuminate\Support\Facades\Route;
@@ -10,14 +11,17 @@ use App\Http\Controllers\Public\ProductController as PublicProductController;
 use App\Http\Controllers\Public\OrderController as PublicOrderController;
 use App\Http\Controllers\Public\CartController;
 use App\Http\Controllers\ApiController;
-
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\MailController;
 
-Route::get('/send-test-mail', [MailController::class, 'sendTestMail']);
+//Route::get('/send-test-mail', [MailController::class, 'sendTestMail']);
 
 
+Route::post('/api-payment', [ApiController::class, 'process']);
 
 Route::get('/api-index', [ApiController::class, 'index']);
+Route::get('/orders/{order}/payment', [PaymentController::class, 'show'])->name('public.order.payment.show');
+Route::post('/orders/{order}/payment', [PaymentController::class, 'process'])->name('public.order.payment.process');
 
 
 
@@ -27,9 +31,10 @@ Route::get('shop/', [PublicController::class, 'shop'])->name('shop');
 Route::get('shop/{category:slug}/{product:slug}', [PublicProductController::class, 'show'])->name('public.product.show');
 
 
-Route::get('/orders/create', [PublicOrderController::class, 'create'])->name('public.order.create');
-Route::post('/orders', [PublicOrderController::class, 'store'])->name('public.order.store');
-Route::get('/orders', [PublicOrderController::class, 'index'])->name('public.order.index');
+Route::get('/order/create', [PublicOrderController::class, 'create'])->name('public.order.create');
+Route::post('/order', [PublicOrderController::class, 'store'])->name('public.order.store');
+Route::get('/order', [PublicOrderController::class, 'index'])->name('public.order.index');
+Route::get('order/{order}', [PublicOrderController::class, 'show'])->name('public.order.show');
 
 
 
@@ -72,5 +77,8 @@ Route::get('/admin/products/{product}/edit', [AdminProductController::class, 'ed
 Route::patch('/admin/products/{product}', [AdminProductController::class, 'update'])->middleware(['auth', 'admin'])->name('admin.product.update');
 Route::delete('/admin/products/{product}', [AdminProductController::class, 'destroy'])->middleware(['auth', 'admin'])->name('admin.product.destroy');
 
-
+Route::get('/admin/orders', [AdminOrderController::class, 'index'])->middleware(['auth', 'admin'])->name('admin.order.index');
+Route::get('/admin/orders/{order}/edit', [AdminOrderController::class, 'edit'])->middleware(['auth', 'admin'])->name('admin.order.edit');
+Route::patch('/admin/orders/{order}', [AdminOrderController::class, 'update'])->middleware(['auth', 'admin'])->name('admin.order.update');
+Route::delete('/admin/orders/{order}', [AdminOrderController::class, 'destroy'])->middleware(['auth', 'admin'])->name('admin.order.destroy');
 

@@ -23,6 +23,7 @@
         </tbody>
     </table>
     <h2>Total: ${{ $cart_total }}</h2>
+    <a href="{{route('public.order.create')}}">Create order</a>
 @else
     <p>Your cart is empty.</p>
 @endif

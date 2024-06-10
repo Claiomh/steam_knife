@@ -22,4 +22,14 @@ class Order extends Model
         return $this->hasMany(OrderItem::class);
     }
 
+    public static function statuses()
+    {
+        return [
+            'pending' => 'Pending',
+            'processing' => 'Processing',
+            'completed' => 'Completed',
+            'cancelled' => 'Cancelled',
+            'paid' => 'Paid'
+        ];
+    }
 }

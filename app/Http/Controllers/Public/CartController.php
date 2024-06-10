@@ -26,9 +26,6 @@ class CartController extends Controller
             // Пользователь авторизован
             $cart = Cart::firstOrCreate(['user_id' => Auth::id()]);
 
-            try {
-                DB::beginTransaction();
-
                 $cartItem = CartItem::where('cart_id', $cart->id)
                     ->where('product_id', $product->id)
                     ->first();
@@ -44,11 +41,7 @@ class CartController extends Controller
                     ]);
                 }
 
-                DB::commit();
-            } catch (\Exception $e) {
-                DB::rollback();
-                return redirect()->back()->with('error', 'Something went wrong while adding product to cart.');
-            }
+
         } else {
             // Пользователь не авторизован, используем сессии
             $cart = session()->get('cart', []);
@@ -56,7 +49,7 @@ class CartController extends Controller
                 $cart[$product->id]['quantity'] += $quantity;
             } else {
                 $cart[$product->id] = [
-                    "name" => $product->name,
+                    "title" => $product->title,
                     "quantity" => $quantity,
                     "price" => $product->price,
                     "image" => $product->image
