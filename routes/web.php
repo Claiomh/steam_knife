@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Public\PublicController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Public\ProductController as PublicProductController;
+use App\Http\Controllers\Public\OrderController as PublicOrderController;
 use App\Http\Controllers\Public\CartController;
 use App\Http\Controllers\ApiController;
 
@@ -26,12 +27,18 @@ Route::get('shop/', [PublicController::class, 'shop'])->name('shop');
 Route::get('shop/{category:slug}/{product:slug}', [PublicProductController::class, 'show'])->name('public.product.show');
 
 
+Route::get('/orders/create', [PublicOrderController::class, 'create'])->name('public.order.create');
+Route::post('/orders', [PublicOrderController::class, 'store'])->name('public.order.store');
+Route::get('/orders', [PublicOrderController::class, 'index'])->name('public.order.index');
 
 
 
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
 Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
 Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.remove');
+
+
+Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 //
 //Route::get('/dashboard', function () {
 //    return view('dashboard');

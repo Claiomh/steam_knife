@@ -8,11 +8,17 @@ use App\Models\Product;
 use App\Models\Cart;
 use App\Models\CartItem;
 use Illuminate\Support\Facades\Auth;
+use DB;
 
 class CartController extends Controller
 {
     public function addToCart(Request $request)
     {
+        $request->validate([
+            'product_id' => 'required|integer|exists:products,id',
+            'quantity' => 'integer|min:1'
+        ]);
+
         $product = Product::findOrFail($request->product_id);
         $quantity = $request->quantity ?? 1;
 
@@ -20,10 +26,29 @@ class CartController extends Controller
             // Пользователь авторизован
             $cart = Cart::firstOrCreate(['user_id' => Auth::id()]);
 
-            $cartItem = CartItem::updateOrCreate(
-                ['cart_id' => $cart->id, 'product_id' => $product->id],
-                ['quantity' => \DB::raw("quantity + $quantity")]
-            );
+            try {
+                DB::beginTransaction();
+
+                $cartItem = CartItem::where('cart_id', $cart->id)
+                    ->where('product_id', $product->id)
+                    ->first();
+
+                if ($cartItem) {
+                    $cartItem->quantity += $quantity;
+                    $cartItem->save();
+                } else {
+                    $cartItem = CartItem::create([
+                        'cart_id' => $cart->id,
+                        'product_id' => $product->id,
+                        'quantity' => $quantity,
+                    ]);
+                }
+
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollback();
+                return redirect()->back()->with('error', 'Something went wrong while adding product to cart.');
+            }
         } else {
             // Пользователь не авторизован, используем сессии
             $cart = session()->get('cart', []);
@@ -31,7 +56,7 @@ class CartController extends Controller
                 $cart[$product->id]['quantity'] += $quantity;
             } else {
                 $cart[$product->id] = [
-                    "name" => $product->title,
+                    "name" => $product->name,
                     "quantity" => $quantity,
                     "price" => $product->price,
                     "image" => $product->image
@@ -42,7 +67,6 @@ class CartController extends Controller
 
         return redirect()->back()->with('success', 'Product added to cart successfully!');
     }
-
     public function showCart()
     {
         $cartItems = [];

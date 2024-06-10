@@ -1,9 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Cart</title>
-</head>
-<body>
+@include('public.layouts.header')
+
 <h1>Your Cart</h1>
 @if (count($cartItems) > 0)
     <table>
@@ -30,5 +26,6 @@
 @else
     <p>Your cart is empty.</p>
 @endif
-</body>
-</html>
+@include('public.layouts.footer')
+
+
