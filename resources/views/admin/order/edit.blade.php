@@ -48,6 +48,10 @@
                         <button type="submit" class="btn btn-primary">Сохранить изменения</button>
                         <a href="{{ route('admin.order.index') }}" class="btn btn-secondary">Отмена</a>
                     </form>
+                    <form method="post" action="{{route('public.order.cancel', $order->id)}}">
+                        @csrf
+                        <button class="btn btn" type="submit">Cancel order</button>
+                    </form>
                 </div>
             </div>
         </div>

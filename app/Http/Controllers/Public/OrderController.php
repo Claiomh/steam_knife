@@ -10,6 +10,9 @@ use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\OrderCreated;
+use App\Notifications\OrderCreatedAdmin;
+use App\Notifications\OrderCancelled;
+use App\Notifications\OrderCancelledAdmin;
 
 class OrderController extends Controller
 {
@@ -56,11 +59,15 @@ class OrderController extends Controller
 
         // Очистка корзины
         $cart->cartItems()->delete();
+        $adminEmail = 'riftgofen@gmail.com'; // Укажите email администратора
+        \Notification::route('mail', $adminEmail)->notify(new OrderCreatedAdmin($order));
+
+
         Auth::user()->notify(new OrderCreated($order));
+
         // Редирект с успешным сообщением
         return redirect()->route('public.order.index')->with('success', 'Заказ успешно создан!');
     }
-
 
 
     // Метод для отображения списка заказов
@@ -70,9 +77,27 @@ class OrderController extends Controller
         return view('public.order.index', compact('orders'));
     }
 
-    public function show(Order $order) {
+    public function show(Order $order)
+    {
         $orderItems = OrderItem::where('order_id' == $order->id);
-        return view('public.order.show', compact('order',  'orderItems'));
+        return view('public.order.show', compact('order', 'orderItems'));
+    }
+
+    public function cancel(Order $order)
+    {
+        if (Auth::user()->usertype != 'admin') {
+            if ($order->user_id !== Auth::id() || $order->status !== 'pending') {
+                return redirect()->back()->with('error', 'Невозможно отменить заказ.');
+            }
+            $order->update(['status' => 'canceled']);
+            $adminEmail = 'riftgofen@gmail.com'; // Укажите email администратора
+            \Notification::route('mail', $adminEmail)->notify(new OrderCancelledAdmin($order));
+        }
+        // Обновление статуса заказа на "отменен"
+        $order->update(['status' => 'canceled']);
+        \Notification::route('mail', $order->customer_email)->notify(new OrderCancelled($order));
+
+        return redirect()->route('public.order.index')->with('success', 'Заказ успешно отменен.');
     }
 
 }

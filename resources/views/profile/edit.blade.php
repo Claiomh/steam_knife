@@ -26,4 +26,5 @@
             </div>
         </div>
     </div>
+    <a href="{{route('profile.order.index')}}">My orders</a>
 </x-app-layout>

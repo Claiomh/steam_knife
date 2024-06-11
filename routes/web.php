@@ -34,7 +34,7 @@ Route::get('shop/{category:slug}/{product:slug}', [PublicProductController::clas
 Route::get('/order/create', [PublicOrderController::class, 'create'])->name('public.order.create');
 Route::post('/order', [PublicOrderController::class, 'store'])->name('public.order.store');
 Route::get('/order', [PublicOrderController::class, 'index'])->name('public.order.index');
-Route::get('order/{order}', [PublicOrderController::class, 'show'])->name('public.order.show');
+
 
 
 
@@ -54,6 +54,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile/orders', [PublicOrderController::class, 'index'])->name('profile.order.index');
+    Route::get('/profile/order/{order}', [PublicOrderController::class, 'show'])->name('public.order.show');
+    Route::post('/profile/order/{order}/cancel', [PublicOrderController::class, 'cancel'])->name('public.order.cancel');
 });
 
 require __DIR__.'/auth.php';
