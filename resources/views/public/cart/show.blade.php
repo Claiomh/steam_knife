@@ -5,19 +5,35 @@
     <table>
         <thead>
         <tr>
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Total</th>
+            <th>Название</th>
+            <th>Количество</th>
+            <th>Цена</th>
+            <th>Итого</th>
+            <th>Действия</th>
         </tr>
         </thead>
         <tbody>
         @foreach ($cartItems as $item)
             <tr>
-                <td>{{ $item->product->title }}</td>
-                <td>{{ $item->quantity }}</td>
-                <td>{{ $item->product->price }}</td>
-                <td>{{ $item->quantity * $item->product->price }}</td>
+                <td>{{ $item['title'] }}</td>
+                <td>
+                    <form action="{{ route('cart.update') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $item['id'] }}">
+                        <input type="number" name="quantity" value="{{ $item['quantity'] }}" min="1">
+                        <button type="submit">Обновить</button>
+                    </form>
+                </td>
+                <td>{{ $item['price'] }}</td>
+                <td>{{ $item['total'] }}</td>
+                <td>
+                    <form action="{{ route('cart.remove') }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <input type="hidden" name="product_id" value="{{ $item['id'] }}">
+                        <button type="submit">Удалить</button>
+                    </form>
+                </td>
             </tr>
         @endforeach
         </tbody>

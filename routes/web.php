@@ -41,7 +41,7 @@ Route::get('order/{order}', [PublicOrderController::class, 'show'])->name('publi
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
 Route::get('/cart', [CartController::class, 'showCart'])->name('cart.show');
 Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.remove');
-
+Route::post('/cart/update', [CartController::class, 'updateCartQuantity'])->name('cart.update');
 
 Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 //

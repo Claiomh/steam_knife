@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\OrderCreated;
 
 class OrderController extends Controller
 {
@@ -55,7 +56,7 @@ class OrderController extends Controller
 
         // Очистка корзины
         $cart->cartItems()->delete();
-
+        Auth::user()->notify(new OrderCreated($order));
         // Редирект с успешным сообщением
         return redirect()->route('public.order.index')->with('success', 'Заказ успешно создан!');
     }
