@@ -38,6 +38,8 @@ class ProductController extends Controller
                 'quantity' => 'integer|required',
                 'slug' => 'string|unique:categories',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'is_active' => 'boolean'
+
             ]
         );
         $path = '';
@@ -55,6 +57,8 @@ class ProductController extends Controller
             'quantity' => $request->quantity,
             'slug' => Str::slug($request->title),
             'image' => $path,
+            'is_active' => $request->has('is_active'),
+
 
         ]);
         return redirect()->route('admin.product.index');
@@ -80,10 +84,12 @@ class ProductController extends Controller
             'price' => 'integer|required',
             'description' => 'string|required',
             'quantity' => 'integer|required',
-            'slug' => 'string|unique:categories',
-            'image' => 'string|nullable',
+            'slug' => 'string|unique:products,slug,' . $product->id,
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'is_active' => 'boolean'
         ]);
-        $product->update([
+
+        $data = [
             'title' => $request->title,
             'description' => $request->description,
             'category_id' => $request->category_id,
@@ -91,8 +97,24 @@ class ProductController extends Controller
             'price' => $request->price,
             'quantity' => $request->quantity,
             'slug' => Str::slug($request->title),
-            'image' => $request->image,
-        ]);
+            'is_active' => $request->has('is_active') ? 1 : 0,
+        ];
+
+        if ($request->hasFile('image')) {
+            // Удаление старого изображения, если оно существует
+            if ($product->image) {
+                Storage::delete('public/' . $product->image);
+            }
+            $fileName = time() . '.' . $request->image->extension();
+            $request->image->storeAs('public/images/products', $fileName);
+            $data['image'] = 'images/products/' . $fileName;
+        } else {
+            // Если новое изображение не передано, оставляем текущее изображение
+            $data['image'] = $product->image;
+        }
+
+        $product->update($data);
+
         return redirect()->route('admin.product.index')->with('success', 'Product updated successfully');
     }
 

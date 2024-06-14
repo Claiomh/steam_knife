@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained('categories');
             $table->foreignId('attribute_id')->constrained('attributes');
             $table->string('title');
-            $table->text('content')->nullable();
+            $table->text('description')->nullable();
             $table->string('image');
             $table->integer('price');
             $table->integer('quantity');

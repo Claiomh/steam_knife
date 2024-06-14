@@ -62,7 +62,7 @@ class CategoryController extends Controller
                 'title' => 'string|required',
                 'description' => 'string|nullable',
                 'slug' => 'string|unique:categories',
-                'image' => 'string|nullable',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
                 'is_active' => 'boolean'
             ]
         );

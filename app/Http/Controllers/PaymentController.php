@@ -28,17 +28,14 @@ class PaymentController extends Controller
         }
 
         // Эмуляция отправки запроса на платёжный шлюз
-        $response = Http::post('http://localhost/api-payment', [
-            'order_id' => $order->id,
-            'amount' => $order->orderItems->sum(function($item) { return $item->quantity * $item->price; })
-        ]);
-
-        if ($response->successful() && $response->json('status') === 'success') {
+        $response = Http::get('https://swapi.dev/api/people')->json();
+        if ($response['results'][0]['name'] === 'Luke Skywalker' ) {
             // Обновление статуса заказа
             $order->update(['status' => 'paid']);
             return redirect()->route('public.order.index')->with('status', 'Оплата успешно проведена.');
         } else {
             return redirect()->back()->with('error', 'Ошибка при обработке платежа.');
         }
+
     }
 }

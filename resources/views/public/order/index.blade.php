@@ -14,6 +14,7 @@
                 <th class="py-2 px-4 bg-gray-100 font-bold uppercase text-sm text-gray-600">Имя клиента</th>
                 <th class="py-2 px-4 bg-gray-100 font-bold uppercase text-sm text-gray-600">Email клиента</th>
                 <th class="py-2 px-4 bg-gray-100 font-bold uppercase text-sm text-gray-600">Продукты</th>
+                <th class="py-2 px-4 bg-gray-100 font-bold uppercase text-sm text-gray-600">Status</th>
                 <th class="py-2 px-4 bg-gray-100 font-bold uppercase text-sm text-gray-600">Общая сумма</th>
                 <th class="py-2 px-4 bg-gray-100 font-bold uppercase text-sm text-gray-600">Действия</th>
             </tr>
@@ -31,6 +32,8 @@
                             @endforeach
                         </ul>
                     </td>
+                    <td class="py-2 px-4 border-b border-gray-200">{{ $order->status }}</td>
+
                     <td class="py-2 px-4 border-b border-gray-200">
                         {{ $order->orderItems->sum(function($item) { return $item->quantity * $item->price; }) }} руб.
                     </td>

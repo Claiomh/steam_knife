@@ -28,6 +28,11 @@ class CartController extends Controller
                 ->where('product_id', $product->id)
                 ->first();
 
+            $currentQuantityInCart = $cartItem ? $cartItem->quantity : 0;
+
+            if (($currentQuantityInCart + $quantity) > $product->quantity) {
+                return redirect()->back()->with('error', 'Недостаточно товара на складе для добавления в корзину.');
+            }
             if ($cartItem) {
                 $cartItem->quantity += $quantity;
                 $cartItem->save();

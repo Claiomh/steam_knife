@@ -9,6 +9,7 @@ use App\Http\Controllers\Public\PublicController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Public\ProductController as PublicProductController;
 use App\Http\Controllers\Public\OrderController as PublicOrderController;
+use App\Http\Controllers\Public\CategoryController as PublicCategoryController;
 use App\Http\Controllers\Public\CartController;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\PaymentController;
@@ -20,6 +21,8 @@ use App\Http\Controllers\MailController;
 Route::post('/api-payment', [ApiController::class, 'process']);
 
 Route::get('/api-index', [ApiController::class, 'index']);
+Route::get('/admin/update_products', [ApiController::class, 'updateFromApi'])->name('update_products');
+
 Route::get('/orders/{order}/payment', [PaymentController::class, 'show'])->name('public.order.payment.show');
 Route::post('/orders/{order}/payment', [PaymentController::class, 'process'])->name('public.order.payment.process');
 
@@ -28,7 +31,10 @@ Route::post('/orders/{order}/payment', [PaymentController::class, 'process'])->n
 
 Route::get('/', [PublicController::class, 'index'])->name('home');
 Route::get('shop/', [PublicController::class, 'shop'])->name('shop');
+Route::get('shop/{category:slug}', [PublicCategoryController::class, 'show'])->name('public.category.show');
 Route::get('shop/{category:slug}/{product:slug}', [PublicProductController::class, 'show'])->name('public.product.show');
+
+Route::get('search/', [PublicController::class, 'search'])->name('public.search');
 
 
 Route::get('/order/create', [PublicOrderController::class, 'create'])->name('public.order.create');

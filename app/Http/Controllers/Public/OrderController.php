@@ -97,6 +97,12 @@ class OrderController extends Controller
         $order->update(['status' => 'canceled']);
         \Notification::route('mail', $order->customer_email)->notify(new OrderCancelled($order));
 
+        foreach ($order->orderItems as $orderItem) {
+            $product = $orderItem->product;
+            $product->quantity += $orderItem->quantity;
+            $product->save();
+        }
+
         return redirect()->route('public.order.index')->with('success', 'Заказ успешно отменен.');
     }
 

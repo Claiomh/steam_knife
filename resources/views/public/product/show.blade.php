@@ -1,5 +1,6 @@
 @include ('public.layouts.header')
 <div class="container-fluid">
+
     <div class="row">
         <div class="col-6">
             <img src="{{asset('storage/'.$product->image)}}" class="card-img-top" alt="...">

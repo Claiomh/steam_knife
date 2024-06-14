@@ -50,6 +50,13 @@
                             <option value="{{$attribute->id}}">{{$attribute->title}}</option>
                         @endforeach
                     </select>
+                    <div class="mb-3">
+                        <label for="is_active" class="form-label">Active category</label>
+                        <input type="checkbox" class="form-control" name="is_active" value="1">
+                        @error('is_active')
+                        {{ $message }}
+                        @enderror
+                    </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>

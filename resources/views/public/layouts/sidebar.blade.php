@@ -1,3 +1,3 @@
 @foreach($categories as $category)
-    <div>{{$category->title}}</div>
+    <a href="{{ route('public.category.show', ['category' => $category->slug]) }}">{{$category->title}}</a>
 @endforeach

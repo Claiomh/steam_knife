@@ -7,21 +7,25 @@
         <div class="page-header">
             <div class="container-fluid">
                 <div class="mb-3">
-                    <a class="btn btn-success" href="{{route('admin.category.create')}}">Create new category</a>
+                    <h1>Orders</h1>
+
                 </div>
                 <div class="container-fluid">
 
 
                     @foreach($orders as $order)
                         <div class="row mb-3">
-                            {{$order->id}}
+                        <div class="col-1">{{$order->id}}</div>
+                        <div class="col-3">{{$order->customer_name}}</div>
+                        <div class="col-3">{{$order->customer_email}}</div>
+                        <div class="col-2">{{$order->status}}</div>
+<div class="col-3"> <a href="{{route('admin.order.edit', $order->id)}}" class="btn btn-warning">Edit</a>
+    <form action="{{route('admin.order.destroy', $order->id)}}" method="post">
+        @csrf
+        @method('delete')
+        <button class="btn btn-danger type="submit">Delete</button>
+    </form></div>
 
-                            <a href="{{route('admin.order.edit', $order->id)}}" class="btn btn-warning">Edit</a>
-                            <form action="{{route('admin.order.destroy', $order->id)}}" method="post">
-                                @csrf
-                                @method('delete')
-                                <button class="btn btn-danger type="submit">Delete</button>
-                            </form>
                         </div>
                     @endforeach
                 </div>
