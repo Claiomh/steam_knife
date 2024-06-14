@@ -54,8 +54,7 @@ class CategoryController extends Controller
             $products->orderBy('title', 'asc');
         }
 
-        $products = $products->get();
-
+        $products = $products->paginate(12);
         return view('public.category.show', compact('category', 'products', 'attributes'));
     }
 

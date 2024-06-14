@@ -21,7 +21,7 @@
                             </div>
                         @endforeach
                     </div>
-                    <input type="hidden" value="{{request('sort')}}">
+                    <input type="hidden" name="sort" value="{{ request('sort') }}">
                     <div class="form-group col-md-3 align-self-end">
                         <button type="submit" class="btn btn-primary">Filter</button>
                     </div>
@@ -29,7 +29,7 @@
             </form>
         </div>
         <div class="col-9">
-            <form action="{{route('public.category.show', $category->id)}}">
+            <form action="{{ route('public.category.show', $category->slug) }}" method="GET">
                 <div class="form-group">
                     <label for="sort">Sort By</label>
                     <select class="form-control" id="sort" name="sort">
@@ -41,32 +41,39 @@
                 </div>
                 <input type="hidden" name="price_min" value="{{ request('price_min') }}">
                 <input type="hidden" name="price_max" value="{{ request('price_max') }}">
-{{--                <input type="hidden" name="attribute_id" value="{{ request('attribute_id') }}">--}}
-                @foreach($attributes as $attribute)
-                    <div class="form-check">
-                        <input type="hidden" class="form-check-input" id="attribute_{{ $attribute->id }}" name="attribute_id[]" value="{{ $attribute->id }}" {{ in_array($attribute->id, request('attribute_id', [])) ? 'checked' : '' }}>
-                    </div>
+                @foreach(request('attribute_id', []) as $attributeId)
+                    <input type="hidden" name="attribute_id[]" value="{{ $attributeId }}">
                 @endforeach
                 <div class="form-group d-flex">
-                    <button type="submit" class="btn btn-primary">sort</button>
+                    <button type="submit" class="btn btn-primary">Sort</button>
                 </div>
             </form>
-            <div class="row">
-                <h1>{{ $category->title }}</h1>
-                @foreach($products as $product)
-                    <div class="col-4">
-                        <div class="card">
-                            <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ $product->title }}</h5>
-                                <p class="card-text">{{ $product->description }}</p>
-                                <p class="card-text">{{ $product->price }}</p>
+            <h1>{{ $category->title }}</h1>
 
-                                <a href="{{ route('public.product.show', ['category' => $category->slug, 'product' => $product->slug]) }}" class="btn btn-primary">Show</a>
+            <div class="row">
+                @if(count($products) > 0)
+                    @foreach($products as $product)
+                        <div class="col-4">
+                            <div class="card">
+                                <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="{{ $product->title }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ $product->title }}</h5>
+                                    <p class="card-text">{{ $product->description }}</p>
+                                    <p class="card-text">{{ $product->price }}</p>
+
+                                    <a href="{{ route('public.product.show', ['category' => $category->slug, 'product' => $product->slug]) }}" class="btn btn-primary">Show</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                @else
+                    <h2>Category is empty</h2>
+                @endif
+            </div>
+
+            <!-- Пагинация -->
+            <div class="d-flex justify-content-center">
+                {{ $products->appends(request()->input())->links() }}
             </div>
         </div>
     </div>
